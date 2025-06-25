@@ -1,0 +1,40 @@
+{
+    "train_fn": "mw21_5p_train_v1.json",
+    "test_fn": "mw21_5p_train_split_v1.json",
+    "prompt_format": "plain_text",
+    "retriever_type": "Mixed",
+    "retriever_dir": "pretrained_sbert/",
+    "retriever_args":  {
+      "search_index_filename": "pretrained_index/gt_delta_slot",
+      "state_transformation": "ref_aware",
+      "bm25_input_kwargs": {
+        "input_type": "dialog_context",
+        "gt_type":"gt_delta_slot"
+      },
+      "sbert_input_kwargs": {
+        "input_type": "gt_delta_slot"
+      }
+    },
+    "lm_decoding_config": {
+      "method": "beam_search",
+      "beam_size": 4
+    },
+    "codex_engine":"../models/Meta-Llama-3-70B-Instruct-GPTQ",
+    "quantization":"GPTQ",
+    "decoder_config": {
+      "decoder_type": "mixed",
+      "operation":"multiply",
+      "zscore":true,
+      "decoding_logic": "multiply_div_top_k",
+      "discount_factor": 0.2, "from_n_possible": 100
+    },
+    "decoding_pool": "all_train_set",
+    "num_examples": {
+      "BM25": 50,
+      "SBERT": 50
+    },
+    "score_type": "score_delta",
+    "num_sampling_iteration": 3,
+    "num_samples": 10
+  }
+  
